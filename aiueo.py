@@ -69,9 +69,10 @@ msgs = {
     'm': Color('💨 已退出%s模式', 'cyan'),
     'n': Color('👋 拜拜ヾ(•ω•`)o 💓 我不在的时候也要好好学习哦', 'cyan'),
     'o': Color('📜 记忆口诀: %s', 'cyan'),
-    'p': Color('⏰ 复习进度: %d/%d', 'cyan'),
+    'p': Color('⏰ 复习进度: %s/%s', 'cyan'),
     'q': Color('🎉 恭喜 你完成了今天的复习!', 'cyan'),
-    'r': Color('⏰  共花了%d秒 答对%d个 正确率%d% 跳过%d个 错误%d次 ', 'cyan')
+    'r': Color('⏰  共花了%s秒 答对%s个 正确率%s/100 跳过%s个 错误%s个', 'cyan'),
+    's': Color('⏰  进入乱序复习模式 计时开始', 'cyan')
 }
 
 
@@ -115,6 +116,8 @@ def shuffle_kana():
     kana_l = [[py, k[0], k[2], k[3]] for py, k in kana_d.items()]
     kana_l += [[py, k[1], k[2], k[3]] for py, k in kana_d.items()]
 
+    # kana_l = [['me', 'め', 'メ', '(me)美女(め)与玫(メ)瑰', '美女与玫瑰']]
+
     shuffle(kana_l)
     time_start = time.time()
 
@@ -122,6 +125,8 @@ def shuffle_kana():
     s_c = 0  # 跳过次数
     w_c = 0  # 错误次数
     c_c = 0  # 提交次数
+
+    print(msgs['s'])
 
     for index, kana in enumerate(kana_l):
 
@@ -168,7 +173,6 @@ def shuffle_kana():
 
     time_end = time.time()
     interval = int(time_end - time_start)
-
     print(msgs['q'])
     print(msgs['r'] % (interval, r_c, int(r_c/c_c*100), s_c, w_c))
 
