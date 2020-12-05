@@ -1,5 +1,6 @@
 from random import choice
 from termcolor import colored as Color
+from pygame import mixer as player
 
 kana_d = {
     'a': ['あ', 'ア', '(a)安(あ)全第一啊(ア)', '安全第一啊'],
@@ -62,7 +63,7 @@ msgs = {
     'i': Color('❌ 答chuo了 再想想 (⊙x⊙;)', 'red'),
     'j': Color('%s', 'blue', attrs=['bold']) + Color(' 读作 ', 'cyan') + Color('%s', 'green', attrs=['bold']),
     'k': Color('💡 给宁一点提示: %s', "cyan"),
-    'l': Color('%s 😅 下次记住哦~ 已帮宁跳过这题', 'cyan'),
+    'l': Color(' 😅 下次记住哦~ 已帮宁跳过这题', 'cyan'),
     'm': Color('💨 已退出%s模式', 'cyan'),
     'n': Color('👋 拜拜ヾ(•ω•`)o 💓 我不在的时候也要好好学习哦', 'cyan'),
     'o': Color('📜 记忆口诀: %s', 'cyan')
@@ -93,6 +94,12 @@ def main():
 
         else:
             continue
+
+
+def play(pinyin):
+    player.init()
+    player.music.load(f'.\media\{pinyin}.mp3')
+    player.music.play()
 
 
 def show_kana(hasFomular=False):
@@ -138,13 +145,16 @@ def exer_kana(mode):
             user_input = input(msg)
 
             if user_input == pinyin:
+                play(pinyin)
+
                 print(f"{msgs['h']}{msgs['o'] % (kana_d[pinyin][2])}")
                 break
 
             elif user_input == '1':
+                play(pinyin)
 
                 msg1 = msgs['j'] % (kana, pinyin)
-                msg2 = msgs['l'] % (kana_d[pinyin][2])
+                msg2 = msgs['o'] % (kana_d[pinyin][2])
 
                 print(msg1, msg2)
                 break

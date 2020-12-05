@@ -2,10 +2,11 @@
 
 用 Python 编写用来给日语初学者练习假名的小程序
 
-使用前请先确保安装了 Python3 环境以及 `termcolor` 终端输出着色模块
+使用前请先确保安装了 Python3 环境以及 `termcolor` 终端输出着色模块和 `pygame` 音频模块
 
 ```bash
 pip install termcolor
+pip install pygame
 ```
 
 建议 `windows` 用户使用 `powershell` 在对应路径下执行 `python aiueo.py` 命令来运行
