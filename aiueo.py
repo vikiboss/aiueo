@@ -1,7 +1,7 @@
 from random import choice
 from termcolor import colored as Color
 
-kana_dict = {
+kana_d = {
     'a': ['あ', 'ア', '(a)安(あ)全第一啊(ア)', '安全第一啊'],
     'i': ['い', 'イ', '以(い)为你(i)依(イ)然爱我', '以为你依然爱我'],
     'u': ['う', 'ウ', '宇(う)宙(ウ)(u)无极限', '宇宙无极限'],
@@ -47,24 +47,25 @@ kana_dict = {
     'yo': ['よ', 'ヨ', '上(よ)山(ヨ)去捉(yo)妖', '上山去捉妖'],
     'wa': ['わ', 'ワ', '13(わ)(一生)17(ワ)(一起)(wa)挖地瓜', '13(一生)17(一起)挖地瓜'],
     'wo': ['を', 'ヲ', '大(を)不溜C(ヲ)(を)哦(wo)', '大不溜C哦'],
-    'n': ['ん', 'ン',  '(n)人(ん)总是需要一点提(ン)点', '人总是需要一点提点'],
+    'n': ['ん', 'ン',  '(n)人(ん)总是需要一点提(ン)点', '人总是需要一点提点']
 }
 
 msgs = {
     'a': '🎉 --- 欢迎~ 这是练习假名的Python🎈程序\n🐈 --- designed by Viki 2020/12/5\n',
     'b': Color('😁 请先选择一个', 'cyan') + Color('练习模式', 'cyan', attrs=['bold', 'underline']),
-    'c': Color('- 1.平假名模式\n- 2.片假名模式\n- 3.混合模式\n- 4.查看假名表\n- 0.退出程序', 'blue'),
+    'c': Color('- 1.平假名模式\n- 2.片假名模式\n- 3.混合模式\n- 4.查看假名表\n- 5.查看记忆口诀\n- 0.退出程序', 'blue'),
     'd': '>>> ',
-    'e': Color('🎊 欢迎~ 开始你的%s练习叭', 'cyan'),
+    'e': Color('🎊 欢迎~ 开始宁的%s练习叭', 'cyan'),
     'f': Color('💡 tip: 输入1跳过当前题目, 输入0退出当前模式, 输入kana查看假名表', 'cyan'),
     'g': Color('%s ', 'blue', attrs=['bold']) + Color('怎么读: ', 'yellow'),
     'h': Color('✅ 干得漂亮 ヽ(✿ﾟ▽ﾟ)ノ', 'green'),
     'i': Color('❌ 答chuo了 再想想 (⊙x⊙;)', 'red'),
     'j': Color('%s', 'blue', attrs=['bold']) + Color(' 读作 ', 'cyan') + Color('%s', 'green', attrs=['bold']),
-    # 'k': Color(),
-    'l': Color('😅 下次记住哦~ 已帮宁跳过这题', 'cyan'),
-    'm': Color('🆗 已退出%s模式', 'cyan'),
-    'n': Color('👋 拜拜ヾ(•ω•`)o 我不在的时候也要好好学习哦', 'cyan')
+    'k': Color('✨ 给宁一些💡提示: %s', "cyan"),
+    'l': Color('%s 😅 下次记住哦~ 已帮宁跳过这题', 'cyan'),
+    'm': Color('💨 已退出%s模式', 'cyan'),
+    'n': Color('👋 拜拜ヾ(•ω•`)o 💓 我不在的时候也要好好学习哦', 'cyan'),
+    'o': Color('📜 记忆口诀: %s', 'cyan')
 }
 
 
@@ -77,22 +78,27 @@ def main():
         if mode == '1' or mode == '2' or mode == '3':
             exer_kana(mode)
         elif mode == '4':
-            show_kana()
+            show_kana(False)
+        elif mode == '5':
+            show_kana(True)
         elif mode == '0':
             exit(msgs['n'])
         else:
             continue
 
 
-def show_kana():
+def show_kana(hasFomular=False):
     kana_str = ''
+    item_number = 1 if hasFomular else 5
     for index in range(46):
-        is_n = '\t\n' if (index + 1) % 5 == 0 else '\t'
-        pinyin = list(kana_dict.keys())[index]
-        hiragana = list(kana_dict.values())[index][0]
-        katakana = list(kana_dict.values())[index][1]
+        is_n = '\t\n' if (index + 1) % item_number == 0 else '\t'
+        pinyin = list(kana_d.keys())[index]
+        hiragana = list(kana_d.values())[index][0]
+        katakana = list(kana_d.values())[index][1]
         kana = Color(f'{hiragana} / {katakana}', 'yellow')
-        kana_str += kana + ' : ' + Color(f'{pinyin} {is_n}', 'green')
+        fomular = f"\t口诀: {list(kana_d.values())[index][2]}" if hasFomular else " "
+        fomular = Color(f"{fomular}{is_n}", "cyan")
+        kana_str += kana + ' : ' + Color(f'{pinyin}', 'green') + fomular
     print(kana_str)
 
 
@@ -100,19 +106,20 @@ def exer_kana(mode):
     maps = {'1': [0, '平假名'], '2': [1, '片假名'], '3': [2, '混合假名']}
     print(msgs['e'] % (maps[mode][1]), msgs['f'])
     while(True):
-        pinyin = choice(list(kana_dict.keys()))
+        pinyin = choice(list(kana_d.keys()))
         if maps[mode][0] == 2:
-            kana = choice(kana_dict[pinyin])
+            kana = choice(kana_d[pinyin][0:2])
         else:
-            kana = kana_dict[pinyin][maps[mode][0]]
+            kana = kana_d[pinyin][maps[mode][0]]
         while(True):
             msg = Color(msgs['g'] % (kana), 'blue')
             user_input = input(msg)
             if user_input == pinyin:
-                print(msgs['h'])
+                print(f"{msgs['h']}{msgs['o'] % (kana_d[pinyin][2])}")
                 break
             elif user_input == '1':
-                print(msgs['j'] % (kana, pinyin), msgs['l'])
+                print(msgs['j'] % (kana, pinyin), msgs['l'] %
+                      (kana_d[pinyin][3]))
                 break
             elif user_input == '0':
                 print(msgs['m'] % (maps[mode][1]))
@@ -121,7 +128,7 @@ def exer_kana(mode):
                 show_kana()
                 continue
             else:
-                print(msgs['i'])
+                print(f"{msgs['i']}{msgs['k'] % (kana_d[pinyin][3])}")
                 continue
 
 
