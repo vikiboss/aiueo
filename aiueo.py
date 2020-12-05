@@ -1,4 +1,5 @@
-from random import choice
+import os
+from random import choice, shuffle
 from termcolor import colored as Color
 from pygame import mixer as player
 
@@ -54,7 +55,7 @@ kana_d = {
 msgs = {
     'a': '🎉 --- 欢迎~ 这是练习假名的Python🎈程序\n🐈 --- designed by Viki 2020/12/5\n',
     'b': Color('😁 请先选择一个', 'cyan') + Color('练习模式', 'cyan', attrs=['bold', 'underline']),
-    'c': Color('- 1.平假名模式\n- 2.片假名模式\n- 3.混合模式\n- 4.查看假名表\n- 5.查看记忆口诀\n- 0.退出程序', 'blue'),
+    'c': Color('- 1.随机平假名模式\n- 2.随机片假名模式\n- 3.混合随机模式\n- 4.打乱复习模式\n- 5.查看假名表\n- 6.查看记忆口诀\n- 0.退出程序', 'blue'),
     'd': '>>> ',
     'e': Color('🎊 欢迎~ 开始宁的%s练习叭', 'cyan'),
     'f': Color('💡 tip: 输入1跳过当前题目, 输入0退出当前模式, 输入kana查看假名表', 'cyan'),
@@ -66,7 +67,9 @@ msgs = {
     'l': Color(' 😅 下次记住哦~ 已帮宁跳过这题', 'cyan'),
     'm': Color('💨 已退出%s模式', 'cyan'),
     'n': Color('👋 拜拜ヾ(•ω•`)o 💓 我不在的时候也要好好学习哦', 'cyan'),
-    'o': Color('📜 记忆口诀: %s', 'cyan')
+    'o': Color('📜 记忆口诀: %s', 'cyan'),
+    'p': Color('⏰ 复习进度: %d/%d', 'cyan'),
+    'q': Color('🎉 恭喜 你完成了今天的复习!', 'cyan')
 }
 
 
@@ -84,9 +87,12 @@ def main():
             exer_kana(mode)
 
         elif mode == '4':
-            show_kana(False)
+            shuffle_kana()
 
         elif mode == '5':
+            show_kana(False)
+
+        elif mode == '6':
             show_kana(True)
 
         elif mode == '0':
@@ -100,6 +106,46 @@ def play(pinyin):
     player.init()
     player.music.load(f'.\media\{pinyin}.mp3')
     player.music.play()
+
+
+def shuffle_kana():
+
+    kana_l = [[py, k[0], k[2], k[3]] for py, k in kana_d.items()]
+    kana_l += [[py, k[1], k[2], k[3]] for py, k in kana_d.items()]
+    shuffle(kana_l)
+
+    for index, kana in enumerate(kana_l):
+
+        while(True):
+
+            msg = Color(msgs['g'] % (kana[1]), 'blue')
+            user_input = input(msg)
+
+            if user_input == kana[0]:
+                play(kana[0])
+                msg1 = msgs['h'] + msgs['o'] % (kana[2])
+                msg2 = msgs['p'] % (index + 1, 92)
+                print(msg1, msg2)
+                break
+
+            elif user_input == '1':
+                play(kana[0])
+
+                msg1 = msgs['j'] % (kana[1], kana[0])
+                msg2 = msgs['o'] % (kana[2])
+                msg3 = msgs['p'] % (index + 1, 92)
+
+                print(msg1, msg2, '\t', msg3)
+                break
+
+            elif user_input == '0':
+                print(msgs['m'] % ("打乱复习"))
+                return
+
+            else:
+                print(f"{msgs['i']}{msgs['k'] % (kana[3])}")
+                continue
+    print(msgs['q'])
 
 
 def show_kana(hasFomular=False):
