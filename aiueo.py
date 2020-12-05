@@ -61,7 +61,7 @@ msgs = {
     'h': Color('✅ 干得漂亮 ヽ(✿ﾟ▽ﾟ)ノ', 'green'),
     'i': Color('❌ 答chuo了 再想想 (⊙x⊙;)', 'red'),
     'j': Color('%s', 'blue', attrs=['bold']) + Color(' 读作 ', 'cyan') + Color('%s', 'green', attrs=['bold']),
-    'k': Color('✨ 给宁一些💡提示: %s', "cyan"),
+    'k': Color('💡 给宁一点提示: %s', "cyan"),
     'l': Color('%s 😅 下次记住哦~ 已帮宁跳过这题', 'cyan'),
     'm': Color('💨 已退出%s模式', 'cyan'),
     'n': Color('👋 拜拜ヾ(•ω•`)o 💓 我不在的时候也要好好学习哦', 'cyan'),
@@ -70,63 +70,93 @@ msgs = {
 
 
 def main():
+
     wel_msg = '\n' + msgs['a'] + '\n' + msgs['b']
     print(wel_msg)
+
     while(True):
+
         menu_msg = msgs['c'] + '\n' + msgs['d']
         mode = input(menu_msg)
+
         if mode == '1' or mode == '2' or mode == '3':
             exer_kana(mode)
+
         elif mode == '4':
             show_kana(False)
+
         elif mode == '5':
             show_kana(True)
+
         elif mode == '0':
             exit(msgs['n'])
+
         else:
             continue
 
 
 def show_kana(hasFomular=False):
+
     kana_str = ''
     item_number = 1 if hasFomular else 5
+
     for index in range(46):
+
         is_n = '\t\n' if (index + 1) % item_number == 0 else '\t'
+
         pinyin = list(kana_d.keys())[index]
         hiragana = list(kana_d.values())[index][0]
         katakana = list(kana_d.values())[index][1]
+
         kana = Color(f'{hiragana} / {katakana}', 'yellow')
+
         fomular = f"\t口诀: {list(kana_d.values())[index][2]}" if hasFomular else " "
         fomular = Color(f"{fomular}{is_n}", "cyan")
+
         kana_str += kana + ' : ' + Color(f'{pinyin}', 'green') + fomular
+
     print(kana_str)
 
 
 def exer_kana(mode):
+
     maps = {'1': [0, '平假名'], '2': [1, '片假名'], '3': [2, '混合假名']}
     print(msgs['e'] % (maps[mode][1]), msgs['f'])
+
     while(True):
         pinyin = choice(list(kana_d.keys()))
+
         if maps[mode][0] == 2:
             kana = choice(kana_d[pinyin][0:2])
+
         else:
             kana = kana_d[pinyin][maps[mode][0]]
+
         while(True):
+
             msg = Color(msgs['g'] % (kana), 'blue')
             user_input = input(msg)
+
             if user_input == pinyin:
                 print(f"{msgs['h']}{msgs['o'] % (kana_d[pinyin][2])}")
                 break
+
             elif user_input == '1':
-                print(msgs['j'] % (kana, pinyin), msgs['l'] %
-                      (kana_d[pinyin][3]))
+
+                msg1 = msgs['j'] % (kana, pinyin)
+                msg2 = msgs['l'] % (kana_d[pinyin][2])
+
+                print(msg1, msg2)
                 break
+
             elif user_input == '0':
                 print(msgs['m'] % (maps[mode][1]))
                 return
+
             elif user_input == 'kana':
                 show_kana()
                 continue
+
             else:
                 print(f"{msgs['i']}{msgs['k'] % (kana_d[pinyin][3])}")
                 continue
