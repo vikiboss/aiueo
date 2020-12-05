@@ -1,4 +1,5 @@
 import os
+import time
 from random import choice, shuffle
 from termcolor import colored as Color
 from pygame import mixer as player
@@ -69,7 +70,8 @@ msgs = {
     'n': Color('👋 拜拜ヾ(•ω•`)o 💓 我不在的时候也要好好学习哦', 'cyan'),
     'o': Color('📜 记忆口诀: %s', 'cyan'),
     'p': Color('⏰ 复习进度: %d/%d', 'cyan'),
-    'q': Color('🎉 恭喜 你完成了今天的复习!', 'cyan')
+    'q': Color('🎉 恭喜 你完成了今天的复习!', 'cyan'),
+    'r': Color('⏰  共花了%d秒 答对%d个 正确率%d% 跳过%d个 错误%d次 ', 'cyan')
 }
 
 
@@ -112,7 +114,14 @@ def shuffle_kana():
 
     kana_l = [[py, k[0], k[2], k[3]] for py, k in kana_d.items()]
     kana_l += [[py, k[1], k[2], k[3]] for py, k in kana_d.items()]
+
     shuffle(kana_l)
+    time_start = time.time()
+
+    r_c = 0  # 正确次数
+    s_c = 0  # 跳过次数
+    w_c = 0  # 错误次数
+    c_c = 0  # 提交次数
 
     for index, kana in enumerate(kana_l):
 
@@ -123,13 +132,21 @@ def shuffle_kana():
 
             if user_input == kana[0]:
                 play(kana[0])
-                msg1 = msgs['h'] + msgs['o'] % (kana[2])
-                msg2 = msgs['p'] % (index + 1, 92)
+
+                r_c += 1
+                c_c += 1
+
+                msg1 = msgs['p'] % (index + 1, 92)
+                msg2 = msgs['h'] + msgs['o'] % (kana[2])
+
                 print(msg1, msg2)
                 break
 
             elif user_input == '1':
                 play(kana[0])
+
+                s_c += 1
+                c_c += 1
 
                 msg1 = msgs['j'] % (kana[1], kana[0])
                 msg2 = msgs['o'] % (kana[2])
@@ -143,9 +160,17 @@ def shuffle_kana():
                 return
 
             else:
+                w_c += 1
+                c_c += 1
+
                 print(f"{msgs['i']}{msgs['k'] % (kana[3])}")
                 continue
+
+    time_end = time.time()
+    interval = int(time_end - time_start)
+
     print(msgs['q'])
+    print(msgs['r'] % (interval, r_c, int(r_c/c_c*100), s_c, w_c))
 
 
 def show_kana(hasFomular=False):
