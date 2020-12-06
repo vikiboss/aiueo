@@ -71,8 +71,8 @@ msgs = {
     'o': Color('📜 记忆口诀: %s', 'cyan'),
     'p': Color('⏰ 复习进度: %s/%s', 'cyan'),
     'q': Color('🎉 恭喜 你完成了今天的复习!', 'cyan'),
-    'r': Color('⏰  共花了%s秒 答对%s个 正确率%s/100 跳过%s个 错误%s个', 'cyan'),
-    's': Color('⏰  进入乱序复习模式 计时开始', 'cyan')
+    'r': Color('⏰ 共花了%s秒 通过%s/92个 正确率%s/%s 跳过%s个 错误%s次', 'cyan'),
+    's': Color('⏰ 进入乱序复习模式 计时开始', 'cyan')
 }
 
 
@@ -126,7 +126,7 @@ def shuffle_kana():
     w_c = 0  # 错误次数
     c_c = 0  # 提交次数
 
-    print(msgs['s'])
+    print(msgs['s'], msgs['f'])
 
     for index, kana in enumerate(kana_l):
 
@@ -174,7 +174,7 @@ def shuffle_kana():
     time_end = time.time()
     interval = int(time_end - time_start)
     print(msgs['q'])
-    print(msgs['r'] % (interval, r_c, int(r_c/c_c*100), s_c, w_c))
+    print(msgs['r'] % (interval, r_c, r_c, c_c, s_c, w_c))
 
 
 def show_kana(hasFomular=False):
