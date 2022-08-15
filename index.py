@@ -1,10 +1,14 @@
+from functools import cache
 import time
 from random import choice, shuffle
 from termcolor import colored as Color
 from pygame import mixer as player
-
 from kana import kana_d
 from msgs import msgs
+from curses import echo
+import os
+# 隐藏 pygame 的版本提示
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
 
 def main():
@@ -184,4 +188,7 @@ def exer_kana(mode):
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except:
+        exit('\n' + msgs['n'])
