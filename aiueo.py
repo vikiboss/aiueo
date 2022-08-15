@@ -39,7 +39,7 @@ def main():
 
 def play(pinyin):
     player.init()
-    player.music.load(f'.\media\{pinyin}.mp3')
+    player.music.load(f'./media/{pinyin}.mp3')
     player.music.play()
 
 
