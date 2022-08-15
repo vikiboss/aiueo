@@ -16,5 +16,3 @@ pip3 install pygame
 # 启动程序
 python3 index.py
 ```
-
-建议 `windows` 用户使用 `powershell` 在对应路径下执行 `python aiueo.py` 命令来运行，`cmd` 可能有乱码以及格式混乱等显示问题
