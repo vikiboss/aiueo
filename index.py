@@ -1,4 +1,3 @@
-import os
 import time
 from random import choice, shuffle
 from termcolor import colored as Color
@@ -13,7 +12,7 @@ def main():
     wel_msg = '\n' + msgs['a'] + '\n' + msgs['b']
     print(wel_msg)
 
-    while(True):
+    while (True):
 
         menu_msg = msgs['c'] + '\n' + msgs['d']
         mode = input(menu_msg)
@@ -59,11 +58,11 @@ def shuffle_kana():
     w_c = []  # 错误列表
     c_c = 0  # 提交次数
 
-    print(msgs['s'], msgs['f'])
+    print(msgs['s'] + '\n' + msgs['f'])
 
     for index, kana in enumerate(kana_l):
 
-        while(True):
+        while (True):
 
             msg = Color(msgs['g'] % (kana[1]), 'blue')
             user_input = input(msg)
@@ -140,9 +139,9 @@ def show_kana(hasFomular=False):
 def exer_kana(mode):
 
     maps = {'1': [0, '平假名'], '2': [1, '片假名'], '3': [2, '混合假名']}
-    print(msgs['e'] % (maps[mode][1]), msgs['f'])
+    print(msgs['e'] % (maps[mode][1]) + '\n' + msgs['f'])
 
-    while(True):
+    while (True):
         pinyin = choice(list(kana_d.keys()))
 
         if maps[mode][0] == 2:
@@ -151,7 +150,7 @@ def exer_kana(mode):
         else:
             kana = kana_d[pinyin][maps[mode][0]]
 
-        while(True):
+        while (True):
 
             msg = Color(msgs['g'] % (kana), 'blue')
             user_input = input(msg)
