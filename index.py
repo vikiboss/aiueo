@@ -1,15 +1,15 @@
+# 隐藏 pygame 的版本提示
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+
 from functools import cache
 import time
 from random import choice, shuffle
 from termcolor import colored as Color
-from pygame import mixer as player
 from kana import kana_d
 from msgs import msgs
 from curses import echo
-import os
-# 隐藏 pygame 的版本提示
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-
+from pygame import mixer as player
 
 def main():
 
